@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Café de Rouen - Brasserie de Quartier</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #404142 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #6e1824 100%);
+            color: white;
+            text-align: center;
+            padding: 2rem 1rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .category-nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .nav-btn {
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+            transform: translateY(-1px);
+        }
+
+        .menu-section {
+            display: none;
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .menu-section.active {
+            display: block;
+        }
+
+        .menu-section h2 {
+            color: #667eea;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 0.5rem;
+        }
+
+        .menu-category {
+            margin-bottom: 2rem;
+        }
+
+        .menu-category h3 {
+            color: #764ba2;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            padding-left: 1rem;
+            border-left: 4px solid #764ba2;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+
+        .menu-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: #f8f9ff;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            border-left: 4px solid #667eea;
+        }
+
+        .menu-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+            background: #f0f3ff;
+        }
+
+        .item-info {
+            flex: 1;
+        }
+
+        .item-name {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 0.3rem;
+        }
+
+        .item-description {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            font-style: italic;
+        }
+
+        .item-price {
+            font-weight: bold;
+            color: #667eea;
+            font-size: 1.1rem;
+            margin-left: 1rem;
+        }
+
+        .happy-hour {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            color: #2d3436;
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+            margin: 1rem 0;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(255, 234, 167, 0.3);
+        }
+
+        .food-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .food-item {
+            background: #f8f9ff;
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .food-item:hover {
+            border-color: #667eea;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2);
+        }
+
+        .food-item h4 {
+            color: #667eea;
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .food-price {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #764ba2;
+        }
+
+        .search-container {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .search-box {
+            padding: 12px 20px;
+            font-size: 1rem;
+            border: 2px solid #667eea;
+            border-radius: 25px;
+            width: 300px;
+            max-width: 100%;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-box:focus {
+            box-shadow: 0 0 15px rgba(102, 126, 234, 0.3);
+            border-color: #764ba2;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2rem; }
+            .category-nav { flex-direction: column; }
+            .nav-btn { width: 100%; }
+            .container { padding: 1rem; }
+            .menu-section { padding: 1rem; }
+            .search-box { width: 100%; }
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            background: #2c3e50;
+            color: white;
+            margin-top: 3rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Café de Rouen</h1>
+        <p>Café de quartier • Brasserie • Café</p>
+    </div>
+
+    <div class="container">
+        <div class="search-container">
+            <input type="text" class="search-box" placeholder="Rechercher dans le menu..." id="searchBox">
+        </div>
+
+        <div class="category-nav">
+            <button class="nav-btn active" onclick="showSection('bieres')">Bières</button>
+            <button class="nav-btn" onclick="showSection('cocktails')">Cocktails</button>
+            <button class="nav-btn" onclick="showSection('vins')">Vins</button>
+            <button class="nav-btn" onclick="showSection('alcools')">Alcools</button>
+            <button class="nav-btn" onclick="showSection('boissons')">Boissons</button>
+            <button class="nav-btn" onclick="showSection('restauration')">Restauration</button>
+        </div>
+
+        <!-- Bières Section -->
+        <div id="bieres" class="menu-section active">
+            <h2>🍺 Bières</h2>
+            
+            <div class="menu-category">
+                <h3>Bières Pression</h3>
+                <div class="menu-grid">
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Bière blonde du café de Rouen</div>
+                            <div class="item-description">5,2% - Bière de la maison</div>
+                        </div>
+                        <div class="item-price">25cl: 3,50€ • 50cl: 6,00€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Bières du moment</div>
+                            <div class="item-description">IPA, blanche, triple, quadruple, bière de saison, bière d'abbaye, rouge, ambré</div>
+                        </div>
+                        <div class="item-price">25cl: 4,00€ • 50cl: 7,50€</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-category">
+                <h3>Cocktails Bières</h3>
+                <div class="menu-grid">
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Le Panaché</div>
+                            <div class="item-description">Limonade, bière</div>
+                        </div>
+                        <div class="item-price">25cl: 3,50€ • 50cl: 6,00€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Le Tango</div>
+                            <div class="item-description">Sirop de grenadine, bière</div>
+                        </div>
+                        <div class="item-price">25cl: 3,50€ • 50cl: 6,00€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Le Monaco</div>
+                            <div class="item-description">Limonade, sirop de grenadine, bière</div>
+                        </div>
+                        <div class="item-price">25cl: 3,50€ • 50cl: 6,00€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Le Picon bière</div>
+                            <div class="item-description">Picon, bière</div>
+                        </div>
+                        <div class="item-price">25cl: 4,00€ • 50cl: 7,50€</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-category">
+                <h3>Bières Bouteilles</h3>
+                <div class="menu-grid">
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">1664 sans alcool</div>
+                            <div class="item-description">33cl</div>
+                        </div>
+                        <div class="item-price">3,90€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Pelforth brune</div>
+                            <div class="item-description">6,5% - 33cl</div>
+                        </div>
+                        <div class="item-price">5,00€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Desperados</div>
+                            <div class="item-description">5,9% - 33cl</div>
+                        </div>
+                        <div class="item-price">5,00€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Corona</div>
+                            <div class="item-description">4,6% - 33cl</div>
+                        </div>
+                        <div class="item-price">5,00€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">La Chouffe</div>
+                            <div class="item-description">8% - 33cl</div>
+                        </div>
+                        <div class="item-price">5,00€</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cocktails Section -->
+        <div id="cocktails" class="menu-section">
+            <h2>🍹 Cocktails</h2>
+            
+            <div class="menu-category">
+                <h3>Cocktails avec Alcool (25cl) - 7,90€</h3>
+                <div class="menu-grid">
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Mojito</div>
+                            <div class="item-description">Rhum, citron vert, cassonnade, feuilles de menthe, perrier</div>
+                        </div>
+                        <div class="item-price">7,90€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Mojito Fruits</div>
+                            <div class="item-description">Fraise, framboise ou passion - Rhum, feuilles de menthe, sucre, citron vert, perrier et purée de fruit</div>
+                        </div>
+                        <div class="item-price">7,90€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Americano Maison</div>
+                            <div class="item-description">Martini rouge, campari, extra dry</div>
+                        </div>
+                        <div class="item-price">7,90€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Spritz</div>
+                            <div class="item-description">Spritz, vin pétillant, perrier</div>
+                        </div>
+                        <div class="item-price">7,90€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Piña Colada</div>
+                            <div class="item-description">Rhum, lait de coco, jus d'ananas</div>
+                        </div>
+                        <div class="item-price">7,90€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Tequila Sunrise</div>
+                            <div class="item-description">Tequila, triple sec, jus d'orange et grenadine</div>
+                        </div>
+                        <div class="item-price">7,90€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Sex on the Beach</div>
+                            <div class="item-description">Vodka, crème de pêche, jus d'orange et grenadine</div>
+                        </div>
+                        <div class="item-price">7,90€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Ti-Punch</div>
+                            <div class="item-description">Rhum, citron vert et cassonade</div>
+                        </div>
+                        <div class="item-price">7,90€</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-category">
+                <h3>Cocktails Sans Alcool (25cl) - 5,90€</h3>
+                <div class="menu-grid">
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Virgin Mojito</div>
+                            <div class="item-description">Citron vert, cassonnade, feuilles de menthe et perrier</div>
+                        </div>
+                        <div class="item-price">5,90€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Virgin Mojito Fruits</div>
+                            <div class="item-description">Fraise, framboise ou passion - Citron vert, cassonnade, feuilles de menthe, sucre, perrier et purée de fruit</div>
+                        </div>
+                        <div class="item-price">5,90€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Virgin Piña Colada</div>
+                            <div class="item-description">Lait de coco et jus d'ananas</div>
+                        </div>
+                        <div class="item-price">5,90€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Le St-Tropez</div>
+                            <div class="item-description">Pur jus de multi-fruits, sirop de grenadine</div>
+                        </div>
+                        <div class="item-price">5,90€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Le Cap d'Agde</div>
+                            <div class="item-description">Jus de fraise, jus d'ananas, jus de coco et sirop de framboise</div>
+                        </div>
+                        <div class="item-price">5,90€</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vins Section -->
+        <div id="vins" class="menu-section">
+            <h2>🍷 Cave à Vins</h2>
+            
+            <div class="menu-category">
+                <h3>Vins Blancs</h3>
+                <div class="menu-grid">
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Chardonnay pays d'Oc</div>
+                            <div class="item-description">"Domaine de Cibadies"</div>
+                        </div>
+                        <div class="item-price">12cl: 4,00€ • 75cl: 20,00€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Bourgogne Aligoté</div>
+                            <div class="item-description">"Valentinois"</div>
+                        </div>
+                        <div class="item-price">12cl: 5,00€ • 75cl: 24,00€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Uby n°4</div>
+                            <div class="item-description">"Côtes de Gascogne"</div>
+                        </div>
+                        <div class="item-price">12cl: 6,00€ • 75cl: 26,00€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Chablis</div>
+                        </div>
+                        <div class="item-price">12cl: 8,00€ • 75cl: 35,00€</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-category">
+                <h3>Vins Rosés</h3>
+                <div class="menu-grid">
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Saint Pierru</div>
+                            <div class="item-description">"Île de Beauté"</div>
+                        </div>
+                        <div class="item-price">12cl: 5,00€ • 75cl: 19,00€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Côte de Provence</div>
+                            <div class="item-description">"Saint-Roch"</div>
+                        </div>
+                        <div class="item-price">12cl: 5,00€ • 75cl: 19,00€</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-category">
+                <h3>Vins Rouges</h3>
+                <div class="menu-grid">
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Brouilly</div>
+                            <div class="item-description">"Château de Nevers"</div>
+                        </div>
+                        <div class="item-price">12cl: 6,00€ • 75cl: 22,00€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Saumur Champigny</div>
+                            <div class="item-description">"Les Loges"</div>
+                        </div>
+                        <div class="item-price">12cl: 5,00€ • 75cl: 19,00€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Côte du Rhône</div>
+                        </div>
+                        <div class="item-price">12cl: 5,00€ • 75cl: 19,00€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Julienas</div>
+                            <div class="item-description">"Du Boeuf"</div>
+                        </div>
+                        <div class="item-price">12cl: 6,00€ • 75cl: 25,00€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Montagne St Emilion</div>
+                            <div class="item-description">"AOC Château Vieux Bonneau"</div>
+                        </div>
+                        <div class="item-price">12cl: 6,00€ • 75cl: 25,00€</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-category">
+                <h3>Apéritifs</h3>
+                <div class="menu-grid">
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Kir vin blanc</div>
+                            <div class="item-description">12cl</div>
+                        </div>
+                        <div class="item-price">3,50€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Kir normand</div>
+                            <div class="item-description">Cidre - 12cl</div>
+                        </div>
+                        <div class="item-price">3,90€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Kir pétillant</div>
+                            <div class="item-description">Vin pétillant - 12cl</div>
+                        </div>
+                        <div class="item-price">4,90€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Kir Royal</div>
+                            <div class="item-description">12cl</div>
+                        </div>
+                        <div class="item-price">9,00€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Martini</div>
+                            <div class="item-description">Rouge ou blanc - 9cl</div>
+                        </div>
+                        <div class="item-price">5,00€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Porto</div>
+                            <div class="item-description">Rouge ou blanc - 9cl</div>
+                        </div>
+                        <div class="item-price">4,00€</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-category">
+                <h3>Champagnes</h3>
+                <div class="menu-grid">
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Champagne Paul Romain</div>
+                        </div>
+                        <div class="item-price">Coupe: 8,00€ • Bouteille: 40,00€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Champagne Mumm</div>
+                        </div>
+                        <div class="item-price">Coupe: 12,00€ • Bouteille: 70,00€</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Alcools Section -->
+        <div id="alcools" class="menu-section">
+            <h2>🥃 Alcools</h2>
+            
+            <div class="happy-hour">
+                🕐 HAPPY HOURS 16h00 – 21h00 🕘
+            </div>
+
+            <div class="menu-category">
+                <h3>Whiskies</h3>
+                <div class="menu-grid">
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Jameson</div>
+                        </div>
+                        <div class="item-price">6,00€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Clan Campbell</div>
+                        </div>
+                        <div class="item-price">6,00€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Aberlour 10 ans</div>
+                        </div>
+                        <div class="item-price">7,00€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Jack Daniel's</div>
+                        </div>
+                        <div class="item-price">7,00€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Nikka</div>
+                        </div>
+                        <div class="item-price">9,00€</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-category">
+                <h3>Alcools Divers</h3>
+                <div class="menu-grid">
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Rhum Havana 7 ans</div>
+                        </div>
+                        <div class="item-price">7,00€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Diplomatico</div>
+                        </div>
+                        <div class="item-price">9,00€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Don Papa</div>
+                        </div>
+                        <div class="item-price">9,00€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Vodka</div>
+                        </div>
+                        <div class="item-price">7,00€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Gin</div>
+                        </div>
+                        <div class="item-price">7,00€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Tequila</div>
+                        </div>
+                        <div class="item-price">7,00€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Jägermeister</div>
+                        </div>
+                        <div class="item-price">6,00€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Pastis 51/Ricard</div>
+                        </div>
+                        <div class="item-price">2cl: 3,20€ • 4cl: 4,90€</div>
+                    </div>
+                </div>
+                <p style="text-align: center; color: #7f8c8d; font-style: italic; margin-top: 1rem;">Supplément softs: +0,50€</p>
+            </div>
+
+            <div class="menu-category">
+                <h3>Alcools & Liqueurs</h3>
+                <div class="menu-grid">
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Cognac</div>
+                            <div class="item-description">6cl</div>
+                        </div>
+                        <div class="item-price">6,00€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Calvados</div>
+                            <div class="item-description">6cl</div>
+                        </div>
+                        <div class="item-price">6,00€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Mint Menthe / Mint Menthe Glaciale</div>
+                            <div class="item-description">6cl</div>
+                        </div>
+                        <div class="item-price">6,00€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Armagnac</div>
+                            <div class="item-description">6cl</div>
+                        </div>
+                        <div class="item-price">6,00€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Irish Cream</div>
+                            <div class="item-description">6cl</div>
+                        </div>
+                        <div class="item-price">6,00€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Limoncello</div>
+                            <div class="item-description">6cl</div>
+                        </div>
+                        <div class="item-price">6,00€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Pommeau</div>
+                            <div class="item-description">8cl</div>
+                        </div>
+                        <div class="item-price">4,00€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Muscat</div>
+                            <div class="item-description">8cl</div>
+                        </div>
+                        <div class="item-price">4,00€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Suze</div>
+                            <div class="item-description">8cl</div>
+                        </div>
+                        <div class="item-price">4,00€</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-category">
+                <h3>Spécialités</h3>
+                <div class="menu-grid">
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Captain Morgan</div>
+                        </div>
+                        <div class="item-price">Simple 2cl: 2€ • Double 4cl: 4€</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Boissons Section -->
+        <div id="boissons" class="menu-section">
+            <h2>🥤 Boissons</h2>
+            
+            <div class="menu-category">
+                <h3>Boissons Chaudes</h3>
+                <div class="menu-grid">
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Expresso ou décaféiné</div>
+                        </div>
+                        <div class="item-price">1,80€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Café ou déca allongé</div>
+                        </div>
+                        <div class="item-price">2,00€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Café ou déca double</div>
+                        </div>
+                        <div class="item-price">3,00€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Noisette</div>
+                        </div>
+                        <div class="item-price">2,00€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Crème</div>
+                        </div>
+                        <div class="item-price">3,80€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Cappuccino</div>
+                        </div>
+                        <div class="item-price">4,00€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Chocolat</div>
+                        </div>
+                        <div class="item-price">4,00€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Thé biologique et équitable</div>
+                            <div class="item-description">Earl Grey, Menthe, Darjeeling, Vanille, Fruits rouges, vert</div>
+                        </div>
+                        <div class="item-price">3,80€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Infusion</div>
+                            <div class="item-description">Verveine, tilleul menthe (supplément citron: +0,30€)</div>
+                        </div>
+                        <div class="item-price">3,60€</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-category">
+                <h3>Sodas & Jus</h3>
+                <div class="menu-grid">
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Coca-Cola</div>
+                            <div class="item-description">33cl</div>
+                        </div>
+                        <div class="item-price">4,00€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Coca-Cola Zéro</div>
+                            <div class="item-description">33cl</div>
+                        </div>
+                        <div class="item-price">4,00€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Coca-Cola Cherry</div>
+                            <div class="item-description">33cl</div>
+                        </div>
+                        <div class="item-price">4,00€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Fanta Orange</div>
+                            <div class="item-description">25cl</div>
+                        </div>
+                        <div class="item-price">4,00€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Sprite</div>
+                            <div class="item-description">25cl</div>
+                        </div>
+                        <div class="item-price">4,00€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Fuze Tea</div>
+                            <div class="item-description">25cl</div>
+                        </div>
+                        <div class="item-price">4,00€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Oasis Tropical</div>
+                            <div class="item-description">25cl</div>
+                        </div>
+                        <div class="item-price">4,00€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Orangina</div>
+                            <div class="item-description">25cl</div>
+                        </div>
+                        <div class="item-price">4,00€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Schweppes</div>
+                            <div class="item-description">Tonic, agrum', lemon - 25cl</div>
+                        </div>
+                        <div class="item-price">4,00€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Jus de fruits Granini</div>
+                            <div class="item-description">Orange, tomate, pomme, ananas, abricot, multivitaminés - 25cl</div>
+                        </div>
+                        <div class="item-price">4,00€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Redbull</div>
+                            <div class="item-description">25cl</div>
+                        </div>
+                        <div class="item-price">4,50€</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-category">
+                <h3>Eaux & Boissons Fraîches</h3>
+                <div class="menu-grid">
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Evian</div>
+                        </div>
+                        <div class="item-price">50cl: 3,90€ • 1L: 4,90€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Badoit</div>
+                        </div>
+                        <div class="item-price">50cl: 3,90€ • 1L: 4,90€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Badoit rouge</div>
+                            <div class="item-description">33cl</div>
+                        </div>
+                        <div class="item-price">4,00€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Vittel</div>
+                            <div class="item-description">25cl</div>
+                        </div>
+                        <div class="item-price">3,50€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Cidre</div>
+                            <div class="item-description">Brut, doux ou rosé - 33cl</div>
+                        </div>
+                        <div class="item-price">3,90€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Limonade à la pression</div>
+                            <div class="item-description">30cl</div>
+                        </div>
+                        <div class="item-price">3,00€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Sirop à l'eau</div>
+                            <div class="item-description">Grenadine, menthe, fraise, pêche, citron, violette, kiwi, banane, cerise, framboise, anis, menthe glaciale - 30cl</div>
+                        </div>
+                        <div class="item-price">2,80€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Diabolo</div>
+                            <div class="item-description">30cl</div>
+                        </div>
+                        <div class="item-price">3,50€</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Restauration Section -->
+        <div id="restauration" class="menu-section">
+            <h2>🍴 Restauration</h2>
+            
+            <div class="food-grid">
+                <div class="food-item">
+                    <h4>Pizza </h4>
+                    <div class="food-price">10,00€</div>
+                </div>
+                <div class="food-item">
+                    <h4>Planche de Charcuterie</h4>
+                    <div class="food-price">10,00€</div>
+                </div>
+                <div class="food-item">
+                    <h4>Planche Fromage</h4>
+                    <div class="food-price">10,00€</div>
+                </div>
+                <div class="food-item">
+                    <h4>Croque Monsieur Frites</h4>
+                    <div class="food-price">9,00€</div>
+                </div>
+                <div class="food-item">
+                    <h4>Mix Tapas</h4>
+                    <div class="food-price">10,00€</div>
+                    <p style="font-size: 0.9rem; color: #7f8c8d; margin-top: 0.5rem;">16 pièces</p>
+                </div>
+                <div class="food-item">
+                    <h4>Mozza Sticks</h4>
+                    <div class="food-price">8,00€</div>
+                    <p style="font-size: 0.9rem; color: #7f8c8d; margin-top: 0.5rem;">10 pièces</p>
+                </div>
+                <div class="food-item">
+                    <h4>Tenders de Poulet</h4>
+                    <div class="food-price">8,00€</div>
+                    <p style="font-size: 0.9rem; color: #7f8c8d; margin-top: 0.5rem;">Env. 450g</p>
+                </div>
+                <div class="food-item">
+                    <h4>Saucisson</h4>
+                    <div class="food-price">5,00€</div>
+                    <p style="font-size: 0.9rem; color: #7f8c8d; margin-top: 0.5rem;">Plusieurs variétés</p>
+                </div>
+               
+                <div class="food-item">
+                    <h4>Oignon Rings</h4>
+                    <div class="food-price">6,00€</div>
+                    <p style="font-size: 0.9rem; color: #7f8c8d; margin-top: 0.5rem;">10 pièces</p>
+                </div>
+                <div class="food-item">
+                    <h4>Bol de Frites</h4>
+                    <div class="food-price">5,00€</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2024 Café de Rouen - Brasserie de Quartier</p>
+        <p>Rouen, Normandie</p>
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.menu-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Update active button
+            const buttons = document.querySelectorAll('.nav-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+
+        // Search functionality
+        document.getElementById('searchBox').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const menuItems = document.querySelectorAll('.menu-item, .food-item');
+            
+            menuItems.forEach(item => {
+                const itemName = item.querySelector('.item-name, h4');
+                const itemDescription = item.querySelector('.item-description');
+                
+                let textContent = itemName ? itemName.textContent.toLowerCase() : '';
+                if (itemDescription) {
+                    textContent += ' ' + itemDescription.textContent.toLowerCase();
+                }
+                
+                if (textContent.includes(searchTerm)) {
+                    item.style.display = 'flex';
+                    item.parentElement.style.display = 'grid';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+            
+            // Hide empty categories
+            const categories = document.querySelectorAll('.menu-category');
+            categories.forEach(category => {
+                const visibleItems = category.querySelectorAll('.menu-item:not([style*="display: none"]), .food-item:not([style*="display: none"])');
+                if (visibleItems.length === 0) {
+                    category.style.display = 'none';
+                } else {
+                    category.style.display = 'block';
+                }
+            });
+        });
+
+        // Show all items when search is cleared
+        document.getElementById('searchBox').addEventListener('input', function() {
+            if (this.value === '') {
+                const allItems = document.querySelectorAll('.menu-item, .food-item, .menu-category');
+                allItems.forEach(item => {
+                    item.style.display = '';
+                });
+            }
+        });
+
+        // Add smooth scrolling to navigation
+        document.querySelectorAll('.nav-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                setTimeout(() => {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                }, 100);
+            });
+        });
+    </script>
+</body>
+</html>
